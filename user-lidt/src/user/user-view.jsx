@@ -64,15 +64,6 @@ const [dataSource, setDataSource] = useState("nosql");
     <div className="form-container">
       <div className="header">
         <h1>{id ? "User Details" : "Create User"}</h1>
-        <div>
-        <label htmlFor="dataSource">Select Data Source: </label>
-        <select id="dataSource" value={dataSource} onChange={handleChange}>
-          <option value="sql">SQL</option>
-          <option value="nosql">NoSQL</option>
-        </select>
-        <p>Selected Data Source: {dataSource}</p>
-        <button onClick={() => fetchUsers()}>Fetch Data</button>
-      </div>
         <button
           className="back-button"
           onClick={() => navigate("/users")}

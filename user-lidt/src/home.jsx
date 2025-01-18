@@ -1,18 +1,20 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
+import "./Home.css"; // Ensure to import the CSS file
 
 const Home = () => {
   const navigate = useNavigate();
 
   return (
     <div className="home-container">
-      <h1>Welcome to Dashbaord</h1>
-      <ul className="nav-list">
-        <li className="nav-item" onClick={() => navigate("/users")}>
-          User List
-        </li>
-      </ul>
+      <header className="header">
+        <h1 className="header-title">Welcome to the Dashboard</h1>
+      </header>
+      <div className="content">
+        <button className="navigate-button" onClick={() => navigate("/users")}>
+          Go to User List
+        </button>
+      </div>
     </div>
   );
 };

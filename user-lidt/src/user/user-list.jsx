@@ -1,50 +1,48 @@
 import React, { useEffect, useState } from "react";
 import "./user-list.css";
-import { useNavigate, useSearchParams } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 
 const UserList = () => {
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const itemsPerPage = 10; 
-
-  const [dataSource, setDataSource] = useState("nosql"); 
+  const [itemsPerPage, setItemsPerPage] = useState(10); // Added state for items per page
+  const [dataSource, setDataSource] = useState("nosql");
 
   const handleChange = (event) => {
-    setDataSource(event.target.value); // Update the state with the selected value
+    setDataSource(event.target.value);
+    setCurrentPage(1); // Reset to the first page when data source changes
   };
 
-  // Fetch users from the API
+  const handleItemsPerPageChange = (event) => {
+    setItemsPerPage(Number(event.target.value));
+    setCurrentPage(1); // Reset to the first page when items per page changes
+  };
+
   const fetchUsers = async (page) => {
     setLoading(true);
+    setError("");
     try {
-
       const response = await fetch(
-        `https://localhost:7006/api/User?PageNumber=1&ItemsPerPage=10`,
+        `https://localhost:7006/api/User?PageNumber=${page}&ItemsPerPage=${itemsPerPage}`,
         {
-          method: "GET", // Set the method to GET
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Datasource": dataSource, // Added datasource header
+            "Datasource": dataSource,
           },
         }
       );
-      // if (!response.ok) {
-      //   throw new Error("Failed to fetch users.");
-      // }
-
+      if (!response.ok) {
+        throw new Error("Failed to fetch users.");
+      }
       const data = await response.json();
-
-
-      console.log(data)
-      setUsers(data.items || []); // Update user list
-      setCurrentPage(data.pageNumber); // Update current page
-      setTotalPages(data.totalPages); // Update total pages
+      setUsers(data.items || []);
+      setCurrentPage(data.pageNumber);
+      setTotalPages(data.totalPages);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -52,32 +50,23 @@ const UserList = () => {
     }
   };
 
-  // Fetch users when the component mounts or the page changes
   useEffect(() => {
     fetchUsers(currentPage);
-  }, [currentPage]);
+  }, [currentPage, itemsPerPage, dataSource]);
 
-
-  useEffect(() => {
-    fetchUsers()
-    // setSearchParams({ currentPage: 1, filter: "active" });
-  }, [])
-
-  // Handle pagination
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
     }
   };
 
-  // Delete a user by ID
   const deleteUser = async (userId) => {
     try {
       const response = await fetch(`https://localhost:7006/api/User/${userId}`, {
-        method: "DELETE", 
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          "Datasource": dataSource, // Added datasource header
+          "Datasource": dataSource,
         },
       });
       if (!response.ok) {
@@ -94,9 +83,9 @@ const UserList = () => {
     return <p>Loading users...</p>;
   }
 
-  //   if (error) {
-  //     return <p style={{ color: "red" }}>{error}</p>;
-  //   }
+  if (error) {
+    return <p style={{ color: "red" }}>{error}</p>;
+  }
 
   return (
     <div className="container">
@@ -107,7 +96,6 @@ const UserList = () => {
           <option value="nosql">NoSQL</option>
         </select>
         <p>Selected Data Source: {dataSource}</p>
-        <button onClick={() => fetchUsers()}>Fetch Data</button>
       </div>
       <div className="table-header">
         <h1>User List</h1>
@@ -180,6 +168,21 @@ const UserList = () => {
         >
           Next
         </button>
+
+        {/* Items per page dropdown */}
+        <label htmlFor="itemsPerPage" className="items-per-page-label">
+          Items per page:
+        </label>
+        <select
+          id="itemsPerPage"
+          value={itemsPerPage}
+          onChange={handleItemsPerPageChange}
+          className="items-per-page-dropdown"
+        >
+          <option value={5}>5</option>
+          <option value={10}>10</option>
+          <option value={20}>20</option>
+        </select>
       </div>
     </div>
   );
