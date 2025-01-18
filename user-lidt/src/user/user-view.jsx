@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
 import "./user-view.css";
 import { useNavigate, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const UserView = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const location = useLocation();
+const [dataSource, setDataSource] = useState("nosql"); 
 
+  const handleChange = (event) => {
+    setDataSource(event.target.value); // Update the state with the selected value
+  };
   const [roles, setRoles] = useState([]);
   const [formData, setFormData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -23,7 +29,13 @@ const UserView = () => {
   const fetchUserDetails = async (id) => {
     try {
       setLoading(true);
-      const response = await fetch(`https://localhost:7006/api/User/${id}`);
+      const response = await fetch(`https://localhost:7006/api/User/${id}`, {
+        method: "GET", // Set the method to GET
+        headers: {
+          "Content-Type": "application/json",
+          "Datasource": dataSource, // Added datasource header
+        },
+      });
       const data = await response.json();
       setFormData(data?.data);
     } catch (err) {
@@ -52,6 +64,15 @@ const UserView = () => {
     <div className="form-container">
       <div className="header">
         <h1>{id ? "User Details" : "Create User"}</h1>
+        <div>
+        <label htmlFor="dataSource">Select Data Source: </label>
+        <select id="dataSource" value={dataSource} onChange={handleChange}>
+          <option value="sql">SQL</option>
+          <option value="nosql">NoSQL</option>
+        </select>
+        <p>Selected Data Source: {dataSource}</p>
+        <button onClick={() => fetchUsers()}>Fetch Data</button>
+      </div>
         <button
           className="back-button"
           onClick={() => navigate("/users")}
