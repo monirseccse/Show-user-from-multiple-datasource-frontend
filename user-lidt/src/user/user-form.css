@@ -35,42 +35,31 @@
     gap: 16px;
   }
   
-  /* Individual field container */
   .field-container {
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
   
-  /* Label styles */
   .field-container label {
+    margin-bottom: 5px;
     font-weight: bold;
-    margin-bottom: 6px;
-    color: #333;
   }
   
-  /* Input and select styles */
-  .field-container input,
-  .field-container select {
-    padding: 10px;
-    font-size: 14px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    width: 100%;
-    box-sizing: border-box;
+  .field-container input[type="checkbox"] {
+    margin-right: 10px;
   }
   
-  /* Fieldset styles for nested fields */
-  .field-container fieldset {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 10px;
-    margin-bottom: 10px;
+  .field-container.inline {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adjust space between label and checkbox */
   }
   
-  .field-container fieldset legend {
-    font-weight: bold;
-    padding: 0 5px;
+  .error {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 5px;
   }
   
   /* Button styles */

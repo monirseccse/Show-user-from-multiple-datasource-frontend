@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./user-form.css";
 import { useNavigate, useParams,useLocation } from "react-router-dom";
-
-
+import config from "./config";
 
 const UserForm = () => {
   const navigate = useNavigate()
@@ -37,7 +36,7 @@ const UserForm = () => {
     try {
 
       const response = await fetch(
-        `https://localhost:7006/api/Role`, {
+        `${config.API_BASE_URL}/api/Role`, {
           method: "GET", // Set the method to GET
           headers: {
             "Content-Type": "application/json",
@@ -62,7 +61,7 @@ const UserForm = () => {
     try {
 
       const response = await fetch(
-        `https://localhost:7006/api/User/${id}`, {
+        `${config.API_BASE_URL}/api/User/${id}`, {
           method: "GET", // Set the method to GET
           headers: {
             "Content-Type": "application/json",
@@ -104,8 +103,8 @@ const UserForm = () => {
 
 
   const apiUrl = id 
-  ? `https://localhost:7006/api/User/${id}` 
-  : `https://localhost:7006/api/User`;
+  ? `${config.API_BASE_URL}/api/User/${id}` 
+  : `${config.API_BASE_URL}/api/User`;
 
   const method = id ? "PUT" : "POST";
 
@@ -219,16 +218,16 @@ const UserForm = () => {
           {errors.lastName && <span className="error">{errors.lastName}</span>}
         </div>
 
-        <div className="field-container">
-          <label htmlFor="active">Active</label>
-          <input
-            type="checkbox"
-            name="active"
-            id="active"
-            checked={formData.active}
-            onChange={handleChange}
-          />
-        </div>
+        <div className="field-container inline">
+  <input
+    type="checkbox"
+    name="active"
+    id="active"
+    checked={formData.active}
+    onChange={handleChange}
+  />
+  <label htmlFor="active">Active</label>
+</div>
 
         <div className="field-container">
           <label htmlFor="company">Company</label>

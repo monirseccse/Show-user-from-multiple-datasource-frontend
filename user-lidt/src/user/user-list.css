@@ -108,3 +108,14 @@
 .items-per-page-dropdown {
   padding: 5px;
 }
+.search-box {
+  margin: 10px 0;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.search-box input {
+  padding: 5px;
+  width: 200px;
+  font-size: 16px;
+}
