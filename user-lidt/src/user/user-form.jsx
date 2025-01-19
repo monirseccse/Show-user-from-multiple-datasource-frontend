@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./user-form.css";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams,useLocation } from "react-router-dom";
 
 
 
@@ -8,7 +8,10 @@ const UserForm = () => {
   const navigate = useNavigate()
   const { id } = useParams();
 
+  const location = useLocation();
+  const { dataSource } = location.state || {};
 
+  console.log("Received dataSource:", dataSource);
   console.log(id)
 
   const [roles, setRoles] = useState([])
@@ -34,7 +37,13 @@ const UserForm = () => {
     try {
 
       const response = await fetch(
-        `https://localhost:7006/api/Role`
+        `https://localhost:7006/api/Role`, {
+          method: "GET", // Set the method to GET
+          headers: {
+            "Content-Type": "application/json",
+            "Datasource": dataSource, // Added datasource header
+          },
+        }
       );
 
       const data = await response.json();
@@ -53,7 +62,13 @@ const UserForm = () => {
     try {
 
       const response = await fetch(
-        `https://localhost:7006/api/User/${id}`
+        `https://localhost:7006/api/User/${id}`, {
+          method: "GET", // Set the method to GET
+          headers: {
+            "Content-Type": "application/json",
+            "Datasource": dataSource, // Added datasource header
+          },
+        }
       );
 
       const data = await response.json();
@@ -100,12 +115,13 @@ const UserForm = () => {
     if (!validate()) return;
 
     setLoading(true);
-
+    
     try {
       const response = await fetch(`${apiUrl}`, {
         method: method,
         headers: {
           "Content-Type": "application/json",
+          "Datasource": dataSource
         },
         body: JSON.stringify(formData),
       });
@@ -172,7 +188,7 @@ const UserForm = () => {
         <h1>{id ? "Edit User" : "Create User"}</h1>
         <button
           className="back-button"
-          onClick={() => navigate("/users")}
+          onClick={() => navigate("/users", { state: { dataSource } })}
         >Back</button>
 
       </div>

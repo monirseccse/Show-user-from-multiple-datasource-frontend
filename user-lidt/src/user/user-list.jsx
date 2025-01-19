@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState} from "react";
 import "./user-list.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation} from "react-router-dom";
 
 const UserList = () => {
   const navigate = useNavigate();
@@ -10,12 +10,11 @@ const UserList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10); // Added state for items per page
-  const [dataSource, setDataSource] = useState("nosql");
+  const location = useLocation();
+  const { dataSource } = location.state || {}; // Safely extract dataSource
 
-  const handleChange = (event) => {
-    setDataSource(event.target.value);
-    setCurrentPage(1); // Reset to the first page when data source changes
-  };
+  // Log the received data to verify
+  console.log("Received dataSource:", dataSource);
 
   const handleItemsPerPageChange = (event) => {
     setItemsPerPage(Number(event.target.value));
@@ -89,19 +88,12 @@ const UserList = () => {
 
   return (
     <div className="container">
-      <div>
-        <label htmlFor="dataSource">Select Data Source: </label>
-        <select id="dataSource" value={dataSource} onChange={handleChange}>
-          <option value="sql">SQL</option>
-          <option value="nosql">NoSQL</option>
-        </select>
-        <p>Selected Data Source: {dataSource}</p>
-      </div>
+     
       <div className="table-header">
         <h1>User List</h1>
         <button
           className="create-button"
-          onClick={() => navigate("/users/create")}
+          onClick={() => navigate("/users/create", { state: { dataSource } })}
         >
           Create User
         </button>
@@ -129,13 +121,13 @@ const UserList = () => {
               <td>
                 <button
                   className="action-button view"
-                  onClick={() => navigate(`/users/view/${user.id}`)}
+                  onClick={() => navigate(`/users/view/${user.id}`, { state: { dataSource } })}
                 >
                   View
                 </button>
                 <button
                   className="action-button edit"
-                  onClick={() => navigate(`/users/edit/${user.id}`)}
+                  onClick={() => navigate(`/users/edit/${user.id}`, { state: { dataSource } })}
                 >
                   Edit
                 </button>
