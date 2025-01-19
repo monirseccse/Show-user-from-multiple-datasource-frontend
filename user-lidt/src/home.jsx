@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Home.css"; // Ensure this file exists with proper styles
 
 const Home = () => {
   const navigate = useNavigate();

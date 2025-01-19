@@ -1,33 +1,75 @@
-/* Container styling */
 .home-container {
-    text-align: center;
-    margin: 50px auto;
-    font-family: Arial, sans-serif;
-  }
-  
-  /* Header */
-  .home-container h1 {
-    font-size: 2rem;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  /* Navigation list */
-  .nav-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .nav-item {
-    font-size: 1.2rem;
-    color: #007bff;
-    cursor: pointer;
-    text-decoration: underline;
-    margin: 10px 0;
-  }
-  
-  .nav-item:hover {
-    color: #0056b3;
-    text-decoration: none;
-  }
-  
+  text-align: center;
+  margin: 50px auto;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+}
+
+/* Header */
+.header-title {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+/* Selector */
+.selector-container {
+  margin-bottom: 20px;
+}
+
+.selector-label {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #34495e;
+  margin-right: 10px;
+}
+
+.data-source-selector {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #bdc3c7;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.data-source-selector:focus {
+  border-color: #3498db;
+}
+
+.selected-data-source {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #7f8c8d;
+}
+
+.selected-data-source span {
+  font-weight: bold;
+  color: #3498db;
+}
+
+/* Button */
+.navigate-button {
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.navigate-button:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+}
+
+.navigate-button:active {
+  background-color: #2471a3;
+  transform: translateY(0);
+}

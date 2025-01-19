@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./user-list.css";
 import { useNavigate, useLocation } from "react-router-dom";
+import config from "./config";
 
 const UserList = () => {
   const navigate = useNavigate();
@@ -13,7 +14,6 @@ const UserList = () => {
   const [searchQuery, setSearchQuery] = useState(""); // State for search input
   const location = useLocation();
   const { dataSource } = location.state || {};
-
   const handleItemsPerPageChange = (event) => {
     setItemsPerPage(Number(event.target.value));
     setCurrentPage(1); // Reset to the first page when items per page changes
@@ -29,7 +29,7 @@ const UserList = () => {
     setError("");
     try {
       const response = await fetch(
-        `https://localhost:7006/api/User?PageNumber=${page}&ItemsPerPage=${itemsPerPage}&LastName=${searchQuery}`,
+        `${config.API_BASE_URL}/api/User?PageNumber=${page}&ItemsPerPage=${itemsPerPage}&LastName=${searchQuery}`,
         {
           method: "GET",
           headers: {
@@ -64,7 +64,7 @@ const UserList = () => {
 
   const deleteUser = async (userId) => {
     try {
-      const response = await fetch(`https://localhost:7006/api/User/${userId}`, {
+      const response = await fetch(`${config.API_BASE_URL}/api/User/${userId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
