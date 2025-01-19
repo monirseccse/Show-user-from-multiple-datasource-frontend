@@ -15,7 +15,7 @@ npm
 1. clone project
 
 ```bash
-  https://github.com/monirseccse/frontend-assignment.git
+  https://github.com/monirseccse/Show-user-from-multiple-datasource-frontend.git
 ```
 2. install dependencies
 ```bash
