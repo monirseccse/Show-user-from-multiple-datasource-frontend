@@ -7,11 +7,9 @@ const UserView = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const location = useLocation();
-const [dataSource, setDataSource] = useState("nosql"); 
+  const { dataSource } = location.state || {};
 
-  const handleChange = (event) => {
-    setDataSource(event.target.value); // Update the state with the selected value
-  };
+  console.log("Received dataSource:", dataSource);
   const [roles, setRoles] = useState([]);
   const [formData, setFormData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -66,7 +64,7 @@ const [dataSource, setDataSource] = useState("nosql");
         <h1>{id ? "User Details" : "Create User"}</h1>
         <button
           className="back-button"
-          onClick={() => navigate("/users")}
+          onClick={() => navigate("/users", { state: { dataSource } })}
         >
           Back
         </button>
