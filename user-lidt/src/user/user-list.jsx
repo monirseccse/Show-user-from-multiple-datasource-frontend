@@ -1,6 +1,6 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./user-list.css";
-import { useNavigate, useLocation} from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const UserList = () => {
   const navigate = useNavigate();
@@ -9,16 +9,19 @@ const UserList = () => {
   const [error, setError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10); // Added state for items per page
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [searchQuery, setSearchQuery] = useState(""); // State for search input
   const location = useLocation();
-  const { dataSource } = location.state || {}; // Safely extract dataSource
-
-  // Log the received data to verify
-  console.log("Received dataSource:", dataSource);
+  const { dataSource } = location.state || {};
 
   const handleItemsPerPageChange = (event) => {
     setItemsPerPage(Number(event.target.value));
     setCurrentPage(1); // Reset to the first page when items per page changes
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+    setCurrentPage(1); // Reset to the first page when search query changes
   };
 
   const fetchUsers = async (page) => {
@@ -26,7 +29,7 @@ const UserList = () => {
     setError("");
     try {
       const response = await fetch(
-        `https://localhost:7006/api/User?PageNumber=${page}&ItemsPerPage=${itemsPerPage}`,
+        `https://localhost:7006/api/User?PageNumber=${page}&ItemsPerPage=${itemsPerPage}&LastName=${searchQuery}`,
         {
           method: "GET",
           headers: {
@@ -51,7 +54,7 @@ const UserList = () => {
 
   useEffect(() => {
     fetchUsers(currentPage);
-  }, [currentPage, itemsPerPage, dataSource]);
+  }, [currentPage, itemsPerPage, searchQuery, dataSource]); // Add searchQuery to dependencies
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
@@ -88,7 +91,6 @@ const UserList = () => {
 
   return (
     <div className="container">
-     
       <div className="table-header">
         <h1>User List</h1>
         <button
@@ -97,6 +99,16 @@ const UserList = () => {
         >
           Create User
         </button>
+      </div>
+
+      {/* Search box */}
+      <div className="search-box">
+        <input
+          type="text"
+          placeholder="Search by last name..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+        />
       </div>
 
       <table className="user-table">
